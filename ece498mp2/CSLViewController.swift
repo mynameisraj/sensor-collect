@@ -15,17 +15,30 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var degreesLabel: UILabel?
     @IBOutlet weak var stepsLabel: UILabel?
 
+    // Pedometer
     var stepCount = 0
     var strideLength = 1.0
-    var heading: CLLocationDirection?
-    var locationManger = CLLocationManager()
-    var totalDegrees = 0.0
     let pedometer = CMPedometer()
+
+    // Motion manager
+    let mManager = CMMotionManager()
+
+    // Compass
+    var locationManger = CLLocationManager()
+    var heading: CLLocationDirection?
+    var lastHeading: CLLocationDirection?
+    var totalDegrees = 0.0
+
+    // Audio recording
     let tmp = NSURL.fileURLWithPath(NSTemporaryDirectory().stringByAppendingPathComponent("tmp.caf"))
     let settings = []
     var recorder: AVAudioRecorder?
     var lastDecibel: Float?
-    var lastHeading: CLLocationDirection?
+
+    // Logging properties
+    var startDate: NSDate?
+    var timer: NSTimer?
+    var log: String?
 
     func getPedometerData() {
         let now = NSDate()
@@ -38,22 +51,40 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         })
     }
 
+    @IBAction func stop(sender: UIButton) {
+        self.timer?.invalidate()
+        self.recorder?.stop()
+        self.locationManger.stopUpdatingHeading()
+        self.pedometer.stopPedometerUpdates()
+        self.mManager.stopAccelerometerUpdates()
+        self.mManager.stopGyroUpdates()
+
+        let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as! NSURL
+        let fileDestinationUrl = documentDirectoryURL.URLByAppendingPathComponent("output.csv")
+        log!.writeToURL(fileDestinationUrl, atomically: true, encoding: NSUTF8StringEncoding, error: nil)
+
+        // Send the file
+        let activityViewController = UIActivityViewController(activityItems: [fileDestinationUrl], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+
     // MARK - CLLocationmanagerDelegate
     func locationManager(manager: CLLocationManager!, didUpdateHeading newHeading: CLHeading!) {
         if (newHeading.headingAccuracy > 0) {
             var heading = newHeading.magneticHeading
+            self.lastHeading = heading
             if (self.heading != nil) {
-                // Reduce granularity of updates to 90 degrees
+                // Reduce granularity of updates to avoid overcount
+                let granularity = 90.0
                 var diff = abs(heading - self.heading!)
 
                 // Difference is a bit subtle if the two values are between true north
-                if (heading < 90 && self.heading > 270) {
+                if (heading < granularity && self.heading > 360-granularity) {
                     diff = 360-self.heading! + heading
-                } else if (heading > 270 && self.heading < 90) {
+                } else if (heading > 360-granularity && self.heading < granularity) {
                     diff = 360-heading + self.heading!
                 }
-                if (diff >= 90) {
-//                    println("new is \(Int(heading)), old is \(Int(self.heading!))")
+                if (diff >= granularity) {
                     self.totalDegrees += diff
                     self.heading = heading
                 }
@@ -64,10 +95,26 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
 
-    func refreshAudioData() {
+    func refreshData() {
+        let now = NSDate()
+        let ms = floor(now.timeIntervalSinceDate(startDate!)*1000)
+
+        // Accelerometer and gyroscope
+        let accelData: CMAccelerometerData? = self.mManager.accelerometerData
+        let gyroData: CMGyroData? = self.mManager.gyroData
+        if (accelData == nil || gyroData == nil) {
+            return
+        }
+        let accel = accelData!.acceleration
+        let gyro = gyroData!.rotationRate
+
+        // Get new audio data
         self.recorder!.updateMeters()
         let decibels = self.recorder!.averagePowerForChannel(0)
-        println("Decibels is \(decibels)")
+
+        let newString = "\(ms),\(accel.x),\(accel.y),\(accel.z),\(gyro.x),\(gyro.y),\(gyro.z),\(self.lastHeading!),\(decibels)\n"
+        log = (log == nil) ? newString : log! + newString
+
     }
 
     override func viewDidLoad() {
@@ -89,7 +136,11 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         self.recorder!.meteringEnabled = true
         self.recorder!.record()
 
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("refreshAudioData"), userInfo: nil, repeats: true)
+        self.mManager.startAccelerometerUpdates()
+        self.mManager.startGyroUpdates()
+
+        self.startDate = NSDate()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("refreshData"), userInfo: nil, repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
