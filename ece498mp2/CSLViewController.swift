@@ -22,9 +22,8 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
     var totalDegrees = 0.0
     let pedometer = CMPedometer()
     let tmp = NSURL.fileURLWithPath(NSTemporaryDirectory().stringByAppendingPathComponent("tmp.caf"))
-    let settings:[NSObject : AnyObject] = [AVFormatIDKey: NSNumber(kAudioFormatAppleIMA4),
-        AVSampleRateKey: NSNumber(44100), AVNumberOfChannelsKey: NSNumber(1), AVLinearPCMBitDepthKey: NSNumber(1), AVLinearPCMIsBigEndianKey: NSNumber(false), AVLinearPCMIsFloatKey: NSNumber(false)]
-    var recorder = AVAudioRecorder(tmp, settings, nil)
+    let settings = []
+    var recorder: AVAudioRecorder?
     var lastDecibel: Float?
     var lastHeading: CLLocationDirection?
 
@@ -54,7 +53,7 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
                     diff = 360-heading + self.heading!
                 }
                 if (diff >= 90) {
-                    println("new is \(Int(heading)), old is \(Int(self.heading!))")
+//                    println("new is \(Int(heading)), old is \(Int(self.heading!))")
                     self.totalDegrees += diff
                     self.heading = heading
                 }
@@ -63,6 +62,12 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
             }
             self.degreesLabel!.text = "\(Int(self.totalDegrees))"
         }
+    }
+
+    func refreshAudioData() {
+        self.recorder!.updateMeters()
+        let decibels = self.recorder!.averagePowerForChannel(0)
+        println("Decibels is \(decibels)")
     }
 
     override func viewDidLoad() {
@@ -76,10 +81,15 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         self.degreesLabel!.text = "0"
         self.stepsLabel!.text = "0"
 
-        self.recorder.meteringEnabled = true
-        recorder.record()
-        recorder.updateMeters()
-        let decibels = recorder.averagePowerForChannel(0)
+        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord , error: nil)
+
+        let settings:[NSObject : AnyObject] = [AVFormatIDKey: NSNumber(integer: kAudioFormatAppleIMA4), AVSampleRateKey: NSNumber(integer: 44100), AVNumberOfChannelsKey: NSNumber(integer: 1), AVLinearPCMBitDepthKey: NSNumber(integer: 1), AVLinearPCMIsBigEndianKey: NSNumber(bool: false), AVLinearPCMIsFloatKey: NSNumber(bool: false)]
+
+        self.recorder = AVAudioRecorder(URL: self.tmp, settings: settings, error: nil)
+        self.recorder!.meteringEnabled = true
+        self.recorder!.record()
+
+        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("refreshAudioData"), userInfo: nil, repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
