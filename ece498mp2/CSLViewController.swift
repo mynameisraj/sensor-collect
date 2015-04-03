@@ -38,7 +38,7 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
     // Logging properties
     var startDate: NSDate?
     var timer: NSTimer?
-    var log: String?
+    var log: String = "time,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z,compass,decibels\n"
 
     func getPedometerData() {
         let now = NSDate()
@@ -58,10 +58,11 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         self.pedometer.stopPedometerUpdates()
         self.mManager.stopAccelerometerUpdates()
         self.mManager.stopGyroUpdates()
+        self.mManager.stopMagnetometerUpdates()
 
         let documentDirectoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as! NSURL
         let fileDestinationUrl = documentDirectoryURL.URLByAppendingPathComponent("output.csv")
-        log!.writeToURL(fileDestinationUrl, atomically: true, encoding: NSUTF8StringEncoding, error: nil)
+        log.writeToURL(fileDestinationUrl, atomically: true, encoding: NSUTF8StringEncoding, error: nil)
 
         // Send the file
         let activityViewController = UIActivityViewController(activityItems: [fileDestinationUrl], applicationActivities: nil)
@@ -102,18 +103,20 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
         // Accelerometer and gyroscope
         let accelData: CMAccelerometerData? = self.mManager.accelerometerData
         let gyroData: CMGyroData? = self.mManager.gyroData
-        if (accelData == nil || gyroData == nil) {
+        let magData: CMMagnetometerData? = self.mManager.magnetometerData
+        if (accelData == nil || gyroData == nil || magData == nil) {
             return
         }
         let accel = accelData!.acceleration
         let gyro = gyroData!.rotationRate
+        let mag = magData!.magneticField
 
         // Get new audio data
         self.recorder!.updateMeters()
         let decibels = self.recorder!.averagePowerForChannel(0)
 
-        let newString = "\(ms),\(accel.x),\(accel.y),\(accel.z),\(gyro.x),\(gyro.y),\(gyro.z),\(self.lastHeading!),\(decibels)\n"
-        log = (log == nil) ? newString : log! + newString
+        let newString = "\(ms),\(accel.x),\(accel.y),\(accel.z),\(gyro.x),\(gyro.y),\(gyro.z),\(mag.x),\(mag.y),\(mag.z),\(self.lastHeading!),\(decibels)\n"
+        log = log + newString
 
     }
 
@@ -138,6 +141,7 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
 
         self.mManager.startAccelerometerUpdates()
         self.mManager.startGyroUpdates()
+        self.mManager.startMagnetometerUpdates()
 
         self.startDate = NSDate()
         self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("refreshData"), userInfo: nil, repeats: true)
