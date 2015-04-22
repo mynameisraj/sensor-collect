@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7528.3" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E7f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7518.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,26 +16,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqB-bD-FkS">
-                                <rect key="frame" x="278" y="228" width="45" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqB-bD-FkS">
+                                <rect key="frame" x="277" y="298" width="45" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Degrees" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTH-cr-rNX">
-                                <rect key="frame" x="228" y="349" width="145" height="48"/>
+                                <rect key="frame" x="228" y="379" width="145" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QH1-Z6-zeD">
-                                <rect key="frame" x="250" y="140" width="102" height="48"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QH1-Z6-zeD">
+                                <rect key="frame" x="249" y="210" width="102" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qmb-la-QVf">
+                                <rect key="frame" x="267" y="133" width="67" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4vJ-cR-qAz">
+                                <rect key="frame" x="224" y="45" width="153" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Degrees" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5Q-iY-etQ">
-                                <rect key="frame" x="269" y="437" width="64" height="21"/>
+                                <rect key="frame" x="269" y="467" width="64" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -53,19 +65,24 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TqB-bD-FkS" firstAttribute="centerX" secondItem="QH1-Z6-zeD" secondAttribute="centerX" id="1xU-dD-f9o"/>
+                            <constraint firstAttribute="centerX" secondItem="4vJ-cR-qAz" secondAttribute="centerX" id="6rQ-hz-6Gg"/>
                             <constraint firstItem="UTH-cr-rNX" firstAttribute="centerX" secondItem="j5Q-iY-etQ" secondAttribute="centerX" id="AEX-bb-IHx"/>
+                            <constraint firstItem="qmb-la-QVf" firstAttribute="top" secondItem="4vJ-cR-qAz" secondAttribute="bottom" constant="40" id="AaH-7s-SJJ"/>
+                            <constraint firstItem="4vJ-cR-qAz" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="25" id="GNI-rh-0yf"/>
                             <constraint firstItem="TqB-bD-FkS" firstAttribute="top" secondItem="QH1-Z6-zeD" secondAttribute="bottom" constant="40" id="IO5-hD-AfA"/>
+                            <constraint firstItem="qmb-la-QVf" firstAttribute="centerX" secondItem="4vJ-cR-qAz" secondAttribute="centerX" id="Rjn-FI-nKL"/>
                             <constraint firstAttribute="centerX" secondItem="QH1-Z6-zeD" secondAttribute="centerX" id="U0a-WN-5J5"/>
                             <constraint firstItem="j5Q-iY-etQ" firstAttribute="top" secondItem="UTH-cr-rNX" secondAttribute="bottom" constant="40" id="ddZ-AV-Ccx"/>
-                            <constraint firstItem="UTH-cr-rNX" firstAttribute="top" secondItem="TqB-bD-FkS" secondAttribute="bottom" constant="100" id="fph-Rq-riI"/>
+                            <constraint firstItem="UTH-cr-rNX" firstAttribute="top" secondItem="TqB-bD-FkS" secondAttribute="bottom" constant="60" id="fph-Rq-riI"/>
                             <constraint firstAttribute="centerX" secondItem="0b5-uE-JOS" secondAttribute="centerX" id="nk1-Cu-8WC"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="0b5-uE-JOS" secondAttribute="bottom" constant="25" id="tBU-hi-GrN"/>
                             <constraint firstAttribute="centerX" secondItem="UTH-cr-rNX" secondAttribute="centerX" id="vB8-rw-uuc"/>
-                            <constraint firstItem="QH1-Z6-zeD" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="120" id="yQV-yS-Zqz"/>
+                            <constraint firstItem="QH1-Z6-zeD" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="190" id="yQV-yS-Zqz"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="degreesLabel" destination="UTH-cr-rNX" id="pRn-8l-OAg"/>
+                        <outlet property="distanceLabel" destination="qmb-la-QVf" id="oTf-ae-Jgc"/>
                         <outlet property="stepsLabel" destination="QH1-Z6-zeD" id="ccH-Yi-GT1"/>
                     </connections>
                 </viewController>

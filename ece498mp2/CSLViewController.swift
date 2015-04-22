@@ -12,12 +12,13 @@ import CoreLocation
 import AVFoundation
 
 class CSLViewController: UIViewController, CLLocationManagerDelegate {
+    @IBOutlet weak var distanceLabel: UILabel?
     @IBOutlet weak var degreesLabel: UILabel?
     @IBOutlet weak var stepsLabel: UILabel?
 
     // Pedometer
     var stepCount = 0
-    var strideLength = 1.0
+    var strideLength = 10.0
     let pedometer = CMPedometer()
 
     // Motion manager
@@ -47,6 +48,8 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
             if (data != nil) {
                 self.stepCount = data.numberOfSteps.integerValue
                 self.stepsLabel!.text = "\(self.stepCount)"
+                let distance:Double = Double(self.stepCount) * self.strideLength
+                self.distanceLabel!.text = "\(distance)"
             }
         })
     }
@@ -130,6 +133,7 @@ class CSLViewController: UIViewController, CLLocationManagerDelegate {
 
         self.degreesLabel!.text = "0"
         self.stepsLabel!.text = "0"
+        self.distanceLabel!.text = "0"
 
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord , error: nil)
 
